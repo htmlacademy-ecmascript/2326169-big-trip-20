@@ -32,11 +32,11 @@ const Duration = {
 
 const TypeWaypoints = {
   type: [
-    'Taxi',
-    'Train',
-    'Flight',
-    'Drive',
-    'Bus'
+    'taxi',
+    'train',
+    'flight',
+    'drive',
+    'bus'
   ]
 };
 

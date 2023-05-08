@@ -6,8 +6,40 @@ function createFormEditTemplate(dataPoint, dataOffer, dataDestination) {
   const { title, price } = dataOffer;
   const { descriptions, name, picture,} = dataDestination;
 
-  const FORMAT_DATE_FROM = dateFrom.format(FormatDateForFormEdite.DATE_FORMAT);
-  const FORMAT_DATE_TO = dateTo.format(FormatDateForFormEdite.DATE_FORMAT);
+  const formatDateFrom = dateFrom.format(FormatDateForFormEdite.DATE_FORMAT);
+  const formatDateTo = dateTo.format(FormatDateForFormEdite.DATE_FORMAT);
+
+  const OFFER_COUNT = 5;
+  const IMG_COUNT = 3;
+  const OFFER_EVENT =
+    `<div class="event__offer-selector">
+  <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+  <label class="event__offer-label" for="event-offer-luggage-1">
+    <span class="event__offer-title">${title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${price}</span>
+  </label>
+</div>`;
+  const PHOTO_EVENT = `<img class="event__photo" src="${picture[0].url}" alt="Event photo"></img>`;
+
+  let conteinerElementsOfferEvent = '';
+  let conteinerElementsPhotoEvent = '';
+
+  const createEventOfferSelector = () => {
+    for (let i = 0; i < OFFER_COUNT; i++) {
+      conteinerElementsOfferEvent += OFFER_EVENT;
+    }
+  };
+
+  const createImgEventPhoto = () => {
+    for (let i = 0; i < IMG_COUNT; i++) {
+      conteinerElementsPhotoEvent += PHOTO_EVENT;
+    }
+  };
+
+  createEventOfferSelector();
+  createImgEventPhoto();
+
   return `<form class="event event--edit" action="#" method="post">
   <header class="event__header">
     <div class="event__type-wrapper">
@@ -83,10 +115,10 @@ function createFormEditTemplate(dataPoint, dataOffer, dataDestination) {
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${FORMAT_DATE_FROM}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formatDateFrom}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${FORMAT_DATE_TO}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${formatDateTo}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -105,50 +137,7 @@ function createFormEditTemplate(dataPoint, dataOffer, dataDestination) {
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-          <label class="event__offer-label" for="event-offer-luggage-1">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-        </div>
-
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-          <label class="event__offer-label" for="event-offer-comfort-1">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-        </div>
-
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-          <label class="event__offer-label" for="event-offer-meal-1">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-        </div>
-
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-          <label class="event__offer-label" for="event-offer-seats-1">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-        </div>
-
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-          <label class="event__offer-label" for="event-offer-train-1">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-        </div>
+        ${conteinerElementsOfferEvent}
       </div>
     </section>
 
@@ -158,11 +147,7 @@ function createFormEditTemplate(dataPoint, dataOffer, dataDestination) {
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          <img class="event__photo" src="${picture[0].url}" alt="Event photo">
-          <img class="event__photo" src="${picture[0].url}" alt="Event photo">
-          <img class="event__photo" src="${picture[0].url}" alt="Event photo">
-          <img class="event__photo" src="${picture[0].url}" alt="Event photo">
-          <img class="event__photo" src="${picture[0].url}" alt="Event photo">
+        ${conteinerElementsPhotoEvent}
         </div>
       </div>
     </section>

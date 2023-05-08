@@ -4,6 +4,14 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { getRandomInteger } from '../util';
 import { Duration } from './const';
 
+const MSEC_IN_SEC = 1000;
+const SEC_IN_MIN = 60;
+const MIN_IN_HOUR = 60;
+const HOUR_IN_DAY = 24;
+
+const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
+const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
+
 let date = dayjs().subtract(getRandomInteger(0, Duration.DAY), 'day').toDate();
 
 const getDate = ({next}) => {
@@ -26,13 +34,6 @@ const getDate = ({next}) => {
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
-const MSEC_IN_SEC = 1000;
-const SEC_IN_MIN = 60;
-const MIN_IN_HOUR = 60;
-const HOUR_IN_DAY = 24;
-
-const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
-const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
 
 const getPointDudration = (dateFrom, dateTo) => {
   const timeDiff = dayjs(dateTo).diff(dayjs(dateFrom));
@@ -55,9 +56,7 @@ const getPointDudration = (dateFrom, dateTo) => {
 };
 
 
-function humanizeTaskDueDate(dueDate) {
-  return dueDate ? dayjs(dueDate) : '';
-}
+const humanizeTaskDueDate = (dueDate) => dueDate ? dayjs(dueDate) : '';
 
 export { getDate, humanizeTaskDueDate, getPointDudration };
 
