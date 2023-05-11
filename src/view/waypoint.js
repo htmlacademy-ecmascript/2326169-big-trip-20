@@ -2,10 +2,9 @@ import {createElement} from '../render.js';
 import { getPointDudration } from '../mock/util.js';
 import { FormatDateForWaipoints } from '../mock/const.js';
 
-function createWaypointTemplate(point, offer) {
+function createWaypointTemplate(point, offers) {
   const { basePrice, type, destination, dateFrom, dateTo } = point;
-  const { title, price } = offer;
-
+  const { title, price } = offers[0];
   const timeDifference = getPointDudration(dateFrom, dateTo);
   const dateFormatFrom = dateFrom.format(FormatDateForWaipoints.DATE_FORMAT);
   const timeFormatFrom = dateFrom.format(FormatDateForWaipoints.HOUR_MINUTE_FORMAT);
@@ -53,13 +52,13 @@ function createWaypointTemplate(point, offer) {
 }
 
 export default class WaypointView {
-  constructor({point, offer}) {
+  constructor({point, offers}) {
     this.point = point;
-    this.offer = offer;
+    this.offers = offers;
   }
 
   getTemplate() {
-    return createWaypointTemplate(this.point, this.offer);
+    return createWaypointTemplate(this.point, this.offers);
   }
 
   getElement() {

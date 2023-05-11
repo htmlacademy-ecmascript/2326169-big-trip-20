@@ -5,20 +5,23 @@ import { render, RenderPosition } from '../render.js';
 
 export default class BoardPresenter {
 
-  constructor({boardContainer, tasksModel}) {
+  constructor({boardContainer, pointAndOffersModel, destinationModel}) {
     this.boardContainer = boardContainer;
-    this.tasksModel = tasksModel;
+    this.pointAndOffersModel = pointAndOffersModel;
+    this.destinationModel = destinationModel;
   }
 
   init() {
-    this.boardTasks = [...this.tasksModel.getTasks()];
+    this.boardPointAndOffers = [...this.pointAndOffersModel.getPointAndOffers()];
+    this.boardDestinations = [...this.destinationModel.getDestinations()];
 
     render(new SortView, this.boardContainer, RenderPosition.AFTERBEGIN);
-    render(new FormEditeView(this.boardTasks[0]), this.boardContainer, RenderPosition.BEFOREEND);
+    render(new FormEditeView(this.boardPointAndOffers[0], this.boardDestinations[0]), this.boardContainer, RenderPosition.BEFOREEND);
 
-    for (let i = 0; i < this.boardTasks.length; i++) {
-      render(new WaypointView(this.boardTasks[i]), this.boardContainer, RenderPosition.BEFOREEND);
+    for (let i = 0; i < this.boardPointAndOffers.length; i++) {
+      render(new WaypointView(this.boardPointAndOffers[i]), this.boardContainer, RenderPosition.BEFOREEND);
     }
   }
 }
+
 

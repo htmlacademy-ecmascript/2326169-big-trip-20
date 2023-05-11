@@ -1,14 +1,16 @@
 import HeadPresenter from './presenter/header';
 import BoardPresenter from './presenter/board';
-import TasksModel from './model/model';
+import PointAndOffersModel from './model/model-point-offers';
+import DestinationModel from './model/model-destination';
 
 const siteMainElement = document.querySelector('.page-body');
 const siteMainInfoElemenet = siteMainElement.querySelector('.trip-main');
 const siteEventsElement = siteMainElement.querySelector('.trip-events');
 
-const tasksModel = new TasksModel;
+const pointAndOffersModel = new PointAndOffersModel;
+const destinationModel = new DestinationModel;
 const headPresenter = new HeadPresenter({headContainer: siteMainInfoElemenet});
-const boardPresenter = new BoardPresenter({boardContainer: siteEventsElement, tasksModel});
+const boardPresenter = new BoardPresenter({boardContainer: siteEventsElement, pointAndOffersModel, destinationModel});
 
 
 headPresenter.init();

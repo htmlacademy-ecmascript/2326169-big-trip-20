@@ -1,44 +1,32 @@
 import {createElement} from '../render.js';
 import { FormatDateForFormEdite } from '../mock/const.js';
 
-function createFormEditTemplate(dataPoint, dataOffer, dataDestination) {
-  const { basePrice, type, dateFrom, dateTo } = dataPoint;
-  const { title, price } = dataOffer;
-  const { descriptions, name, picture,} = dataDestination;
-
+function createFormEditTemplate(dataPoint, dataOffers, dataDestination) {
+  const { basePrice, type, destination, dateFrom, dateTo } = dataPoint;
   const formatDateFrom = dateFrom.format(FormatDateForFormEdite.DATE_FORMAT);
   const formatDateTo = dateTo.format(FormatDateForFormEdite.DATE_FORMAT);
 
-  const OFFER_COUNT = 5;
-  const IMG_COUNT = 3;
-  const OFFER_EVENT =
-    `<div class="event__offer-selector">
-  <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-  <label class="event__offer-label" for="event-offer-luggage-1">
-    <span class="event__offer-title">${title}</span>
-    &plus;&euro;&nbsp;
-    <span class="event__offer-price">${price}</span>
-  </label>
-</div>`;
-  const PHOTO_EVENT = `<img class="event__photo" src="${picture[0].url}" alt="Event photo"></img>`;
-
-  let conteinerElementsOfferEvent = '';
-  let conteinerElementsPhotoEvent = '';
-
-  const createEventOfferSelector = () => {
-    for (let i = 0; i < OFFER_COUNT; i++) {
-      conteinerElementsOfferEvent += OFFER_EVENT;
-    }
+  const createOfferTemplate = (offer) => {
+    const templateOffer = `<div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+    <label class="event__offer-label" for="event-offer-luggage-1">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+    </label>
+  </div>`;
+    return templateOffer;
   };
 
-  const createImgEventPhoto = () => {
-    for (let i = 0; i < IMG_COUNT; i++) {
-      conteinerElementsPhotoEvent += PHOTO_EVENT;
-    }
+  const createPictureTemplate = (pictures) => {
+    const picture = pictures.picture;
+    const templatePicture = `<img class="event__photo" src="${picture[0].url}" alt="Event photo"></img>`;
+    return templatePicture;
   };
 
-  createEventOfferSelector();
-  createImgEventPhoto();
+  const createEventOffersSelector = () => dataOffers.map(createOfferTemplate).join(' ');
+  const createEventPhotos = () => dataDestination.map(createPictureTemplate).join(' ');
+
 
   return `<form class="event event--edit" action="#" method="post">
   <header class="event__header">
@@ -105,7 +93,7 @@ function createFormEditTemplate(dataPoint, dataOffer, dataDestination) {
       <label class="event__label  event__type-output" for="event-destination-1">
         ${type}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
       <datalist id="destination-list-1">
         <option value="Amsterdam"></option>
         <option value="Geneva"></option>
@@ -137,33 +125,32 @@ function createFormEditTemplate(dataPoint, dataOffer, dataDestination) {
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
-        ${conteinerElementsOfferEvent}
+        ${createEventOffersSelector()}
       </div>
     </section>
 
     <section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${descriptions}.</p>
+      <p class="event__destination-description">${destination}.</p>
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
-        ${conteinerElementsPhotoEvent}
+        ${createEventPhotos()}
         </div>
       </div>
     </section>
   </section>
 </form>`;
 }
-
 export default class FormEditeView {
-  constructor({point, offer, destination}) {
+  constructor({point, offers}, {destination}) {
     this.point = point;
-    this.offer = offer;
+    this.offers = offers;
     this.destination = destination;
   }
 
   getTemplate() {
-    return createFormEditTemplate(this.point, this.offer, this.destination);
+    return createFormEditTemplate(this.point, this.offers, this.destination);
   }
 
   getElement() {
