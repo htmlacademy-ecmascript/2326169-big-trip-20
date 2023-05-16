@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
 import { FormatDateForFormEdite } from '../mock/const.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function createFormEditTemplate(dataPoint, dataOffers, dataDestination) {
   const { basePrice, type, destination, dateFrom, dateTo } = dataPoint;
@@ -142,26 +142,36 @@ function createFormEditTemplate(dataPoint, dataOffers, dataDestination) {
   </section>
 </form>`;
 }
-export default class FormEditeView {
-  constructor({point, offers}, {destination}) {
-    this.point = point;
-    this.offers = offers;
-    this.destination = destination;
+export default class FormEditeView extends AbstractView {
+  #point = null;
+  #offers = null;
+  #destination = null;
+  #onFormReset = null;
+  #onFormSubmit = null;
+
+  constructor({point, offers}, {destination}, {onFormReset}, {onFormSubmit}) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destination = destination;
+    this.#onFormReset = onFormReset;
+    this.#onFormSubmit = onFormSubmit;
+
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formReset);
+    this.element.querySelector('.event__save-btn').addEventListener('click', this.#formSubmit);
   }
 
-  getTemplate() {
-    return createFormEditTemplate(this.point, this.offers, this.destination);
+  get template() {
+    return createFormEditTemplate(this.#point, this.#offers, this.#destination);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
+  #formReset = (evt) => {
+    evt.preventDefault();
+    this.#onFormReset();
+  };
 
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #formSubmit = (evt) => {
+    evt.preventDefault();
+    this.#onFormSubmit();
+  };
 }

@@ -1,6 +1,6 @@
-import {createElement} from '../render.js';
 import { getPointDudration } from '../mock/util.js';
 import { FormatDateForWaipoints } from '../mock/const.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function createWaypointTemplate(point, offers) {
   const { basePrice, type, destination, dateFrom, dateTo } = point;
@@ -51,25 +51,26 @@ function createWaypointTemplate(point, offers) {
 </ul>`;
 }
 
-export default class WaypointView {
-  constructor({point, offers}) {
-    this.point = point;
-    this.offers = offers;
+export default class WaypointView extends AbstractView {
+  #point = null;
+  #offers = null;
+  #onEditClick = null;
+
+  constructor({point, offers}, {onEditClick}) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#onEditClick = onEditClick;
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   }
 
-  getTemplate() {
-    return createWaypointTemplate(this.point, this.offers);
+  get template() {
+    return createWaypointTemplate(this.#point, this.#offers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onEditClick();
+  };
 }
