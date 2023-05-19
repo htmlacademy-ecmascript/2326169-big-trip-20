@@ -55,8 +55,15 @@ const FormatDateForWaipoints = {
   HOUR_MINUTE_FORMAT:'HH:mm'
 };
 
-const FormatDateForFormEdite = {
+const FormatDateForFormEdit = {
   DATE_FORMAT: 'DD/MM/YY HH:mm'
 };
 
-export { CITIES, DESCRIPTION_FOR_DESTINATION, Duration, TypeWaypoints, FAVORITE, Price, TITLES, FormatDateForWaipoints, FormatDateForFormEdite};
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+export { CITIES, DESCRIPTION_FOR_DESTINATION, Duration, TypeWaypoints, FAVORITE, Price, TITLES, FormatDateForWaipoints, FormatDateForFormEdit, FilterType};

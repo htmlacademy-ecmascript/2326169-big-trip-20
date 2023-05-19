@@ -58,5 +58,11 @@ const getPointDudration = (dateFrom, dateTo) => {
 
 const humanizeTaskDueDate = (dueDate) => dueDate ? dayjs(dueDate) : '';
 
-export { getDate, humanizeTaskDueDate, getPointDudration };
+const isPointFuture = (point) => dayjs().isBefore(point.dateFrom);
+
+const isPointPresent = (point) => (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
+
+const isPointPast = (point) => dayjs().isAfter(point.dateTo);
+
+export { getDate, humanizeTaskDueDate, getPointDudration, isPointFuture, isPointPresent, isPointPast };
 
