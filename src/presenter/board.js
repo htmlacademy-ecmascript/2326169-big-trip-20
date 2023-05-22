@@ -31,7 +31,7 @@ export default class BoardPresenter {
     }
   }
 
-  #renderPoint = ({point}, {offers}, {destination}) => {
+  #renderPoint = (point, {offers}, {destination}) => {
     const wayPointComponent = new WaypointView({point}, {offers}, {onEditClick: formEditClickHandler});
 
     const formEditComponent = new FormEditView({point}, {offers}, {destination}, {onFormReset: resetButtonClickHandler}, {onFormSubmit: wayPointSubmitHandler});

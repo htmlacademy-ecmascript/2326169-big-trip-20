@@ -16,15 +16,5 @@ const generatePoint = () => ({
   type: getRandomArrayElement(TypeWaypoints.type)
 });
 
-export default class RandomPoint {
-  constructor() {
-    this.point = generatePoint();
-  }
-}
 
-const getPoints = () => {
-  const points = new RandomPoint();
-  return points;
-};
-
-export { getPoints };
+export { generatePoint };
