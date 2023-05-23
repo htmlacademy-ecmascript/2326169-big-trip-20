@@ -13,7 +13,6 @@ const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
 const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
 
 let date = dayjs().subtract(getRandomInteger(0, Duration.DAY), 'day').toDate();
-
 const getDate = ({next}) => {
   const minsGap = getRandomInteger(0, Duration.MIN);
   const hoursGap = getRandomInteger(1, Duration.HOUR);
@@ -51,7 +50,6 @@ const getPointDudration = (dateFrom, dateTo) => {
       pointDuration = dayjs.duration(timeDiff).format ('mm[M]');
       break;
   }
-
   return pointDuration;
 };
 
@@ -64,5 +62,7 @@ const isPointPresent = (point) => (dayjs().isAfter(point.dateFrom) && dayjs().is
 
 const isPointPast = (point) => dayjs().isAfter(point.dateTo);
 
-export { getDate, humanizeTaskDueDate, getPointDudration, isPointFuture, isPointPresent, isPointPast };
+const capitalize = (string) => `${string[0].toUpperCase()}${string.slice(1)}`;
+
+export { getDate, humanizeTaskDueDate, getPointDudration, isPointFuture, isPointPresent, isPointPast, capitalize };
 
