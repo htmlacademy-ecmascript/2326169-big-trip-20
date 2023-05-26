@@ -1,10 +1,10 @@
-import { FormatDateForFormEdite } from '../mock/const.js';
+import { FormatDateForFormEdit } from '../mock/const.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createFormEditTemplate(dataPoint, dataOffers, dataDestination) {
   const { basePrice, type, destination, dateFrom, dateTo } = dataPoint;
-  const formatDateFrom = dateFrom.format(FormatDateForFormEdite.DATE_FORMAT);
-  const formatDateTo = dateTo.format(FormatDateForFormEdite.DATE_FORMAT);
+  const formatDateFrom = dateFrom.format(FormatDateForFormEdit.DATE_FORMAT);
+  const formatDateTo = dateTo.format(FormatDateForFormEdit.DATE_FORMAT);
 
   const createOfferTemplate = (offer) => {
     const templateOffer = `<div class="event__offer-selector">
@@ -142,14 +142,14 @@ function createFormEditTemplate(dataPoint, dataOffers, dataDestination) {
   </section>
 </form>`;
 }
-export default class FormEditeView extends AbstractView {
+export default class FormEditView extends AbstractView {
   #point = null;
   #offers = null;
   #destination = null;
   #onFormReset = null;
   #onFormSubmit = null;
 
-  constructor({point, offers}, {destination}, {onFormReset}, {onFormSubmit}) {
+  constructor({point}, {offers}, {destination}, {onFormReset}, {onFormSubmit}) {
     super();
     this.#point = point;
     this.#offers = offers;
