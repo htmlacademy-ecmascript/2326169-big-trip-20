@@ -1,20 +1,21 @@
 import SortView from '../view/sort.js';
-import FormEditView from '../view/form-edit.js';
-import WaypointView from '../view/waypoint.js';
 import EmptyView from '../view/empty.js';
-import { render, RenderPosition, replace } from '../framework/render.js';
+import WaypointPresenter from './waypoint-presenter.js';
+import { render, RenderPosition } from '../framework/render.js';
 
 const POINT_COUNT = 0;
 export default class BoardPresenter {
   #destinationModel = null;
   #pointsModel = null;
   #offersModel = null;
+
+  #boardConatiner = null;
   #boardPoints = null;
   #boardOffers = null;
   #boardDestinations = null;
 
   constructor({boardContainer, pointsModel, offersModel, destinationModel}) {
-    this.boardContainer = boardContainer;
+    this.#boardConatiner = boardContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationModel = destinationModel;
@@ -24,56 +25,28 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.getPoints()];
     this.#boardOffers = [...this.#offersModel.getOffers()];
     this.#boardDestinations = [...this.#destinationModel.getDestinations()];
-    render(new SortView, this.boardContainer, RenderPosition.AFTERBEGIN);
+
+    render(new SortView, this.#boardConatiner, RenderPosition.AFTERBEGIN);
 
     if (this.#boardPoints.length === POINT_COUNT) {
-      render(new EmptyView, this.boardContainer);
+      render(new EmptyView, this.#boardConatiner);
     }
 
     for (let i = 0; i < this.#boardPoints.length; i++) {
-      this.#renderPoint(this.#boardPoints[i], this.#boardOffers[0], this.#boardDestinations[0]);
+      this.#renderPoint(
+        this.#boardConatiner,
+        this.#boardPoints[i],
+        this.#boardOffers[0],
+        this.#boardDestinations[0]
+      );
     }
   }
 
-  #renderPoint = (point, {offers}, {destination}) => {
+  #renderPoint = (container, point, {offers}, {destination}) => {
 
-    const wayPointComponent = new WaypointView({point}, {offers}, {onEditClick: formEditClickHandler});
+    const wayPointComponent = new WaypointPresenter({container, point, offers, destination});
 
-    const formEditComponent = new FormEditView({point}, {offers}, {destination}, {onFormReset: resetButtonClickHandler}, {onFormSubmit: wayPointSubmitHandler});
+    wayPointComponent.init();
 
-    const replaceWayPointToFormEdit = () => {
-      replace(formEditComponent, wayPointComponent);
-    };
-
-    const replaceFormEditToWayPoint = () => {
-      replace(wayPointComponent, formEditComponent);
-    };
-
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormEditToWayPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    function formEditClickHandler () {
-      replaceWayPointToFormEdit();
-      document.addEventListener('keydown', escKeyDownHandler);
-    }
-
-    function resetButtonClickHandler() {
-      replaceFormEditToWayPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    }
-
-    function wayPointSubmitHandler() {
-      replaceFormEditToWayPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    }
-
-    render(wayPointComponent, this.boardContainer, RenderPosition.BEFOREEND);
   };
 }
-
-

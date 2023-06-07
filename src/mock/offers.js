@@ -3,27 +3,27 @@ import { Price, TITLES } from './const';
 
 const generateOffer = () => ([{
   id: crypto.randomUUID(),
-  title: `${getRandomArrayElement(TITLES.title)}`,
+  title: `${getRandomArrayElement(TITLES)}`,
   price: getRandomInteger(Price.MIN, Price.MAX)
 },
 {
   id: crypto.randomUUID(),
-  title: `${getRandomArrayElement(TITLES.title)}`,
+  title: `${getRandomArrayElement(TITLES)}`,
   price: getRandomInteger(Price.MIN, Price.MAX)
 },
 {
   id: crypto.randomUUID(),
-  title: `${getRandomArrayElement(TITLES.title)}`,
+  title: `${getRandomArrayElement(TITLES)}`,
   price: getRandomInteger(Price.MIN, Price.MAX)
 },
 {
   id: crypto.randomUUID(),
-  title: `${getRandomArrayElement(TITLES.title)}`,
+  title: `${getRandomArrayElement(TITLES)}`,
   price: getRandomInteger(Price.MIN, Price.MAX)
 },
 {
   id: crypto.randomUUID(),
-  title: `${getRandomArrayElement(TITLES.title)}`,
+  title: `${getRandomArrayElement(TITLES)}`,
   price: getRandomInteger(Price.MIN, Price.MAX)
 }
 ]);

@@ -149,7 +149,7 @@ export default class FormEditView extends AbstractView {
   #onFormReset = null;
   #onFormSubmit = null;
 
-  constructor({point}, {offers}, {destination}, {onFormReset}, {onFormSubmit}) {
+  constructor(point, offers, destination, {onFormReset}, {onFormSubmit}) {
     super();
     this.#point = point;
     this.#offers = offers;

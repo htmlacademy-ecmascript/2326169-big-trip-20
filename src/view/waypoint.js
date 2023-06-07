@@ -1,10 +1,15 @@
 import { getPointDudration } from '../mock/util.js';
 import { FormatDateForWaipoints } from '../mock/const.js';
 import AbstractView from '../framework/view/abstract-view.js';
+import { getRandomArrayElement } from '../util.js';
 
 function createWaypointTemplate(point, offers) {
   const { basePrice, type, destination, dateFrom, dateTo } = point;
-  const { title, price } = offers[0];
+
+  const randomOffers = getRandomArrayElement(offers);
+  const title = randomOffers.title;
+  const price = randomOffers.price;
+
   const timeDifference = getPointDudration(dateFrom, dateTo);
   const dateFormatFrom = dateFrom.format(FormatDateForWaipoints.DATE_FORMAT);
   const timeFormatFrom = dateFrom.format(FormatDateForWaipoints.HOUR_MINUTE_FORMAT);
@@ -56,7 +61,7 @@ export default class WaypointView extends AbstractView {
   #offers = null;
   #onEditClick = null;
 
-  constructor({point}, {offers}, {onEditClick}) {
+  constructor(point, offers, {onEditClick}) {
     super();
     this.#point = point;
     this.#offers = offers;

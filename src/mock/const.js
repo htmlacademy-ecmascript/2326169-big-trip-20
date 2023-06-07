@@ -14,15 +14,12 @@ const DESCRIPTION_FOR_DESTINATION = [
   'Peace'
 ];
 
-const TITLES = {
-  title:
-  [
-    'Upgrade to a business class',
-    'Choose the radio station',
-    'Choose temperature',
-    'Drive slowly'
-  ]
-};
+const TITLES = [
+  'Upgrade to a business class',
+  'Choose the radio station',
+  'Choose temperature',
+  'Drive slowly'
+];
 
 const Duration = {
   HOUR: 5,

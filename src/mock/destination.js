@@ -1,33 +1,32 @@
 import { getRandomArrayElement } from '../util';
 import { CITIES, DESCRIPTION_FOR_DESTINATION } from './const';
 
-const city = getRandomArrayElement(CITIES);
 
 const generateDestinations = () => [{
   id: crypto.randomUUID(),
   descriptions: getRandomArrayElement(DESCRIPTION_FOR_DESTINATION),
-  name: city,
+  name: getRandomArrayElement(CITIES),
   picture: [{
     url: `https://loremflickr.com/248/152?random=${crypto.randomUUID()}`,
-    description: `${city} description`
+    description: `${getRandomArrayElement(CITIES)} description`
   }]
 },
 {
   id: crypto.randomUUID(),
   descriptions: getRandomArrayElement(DESCRIPTION_FOR_DESTINATION),
-  name: city,
+  name: getRandomArrayElement(CITIES),
   picture: [{
     url: `https://loremflickr.com/248/152?random=${crypto.randomUUID()}`,
-    description: `${city} description`
+    description: `${getRandomArrayElement(CITIES)} description`
   }]
 },
 {
   id: crypto.randomUUID(),
   descriptions: getRandomArrayElement(DESCRIPTION_FOR_DESTINATION),
-  name: city,
+  name: getRandomArrayElement(CITIES),
   picture: [{
     url: `https://loremflickr.com/248/152?random=${crypto.randomUUID()}`,
-    description: `${city} description`
+    description: `${getRandomArrayElement(CITIES)} description`
   }]
 }];
 
