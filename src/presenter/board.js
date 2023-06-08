@@ -2,17 +2,23 @@ import SortView from '../view/sort.js';
 import EmptyView from '../view/empty.js';
 import WaypointPresenter from './waypoint-presenter.js';
 import { render, RenderPosition } from '../framework/render.js';
+import { updateItem } from '../util.js';
 
 const POINT_COUNT = 0;
 export default class BoardPresenter {
+  //модели
   #destinationModel = null;
   #pointsModel = null;
   #offersModel = null;
 
+  //board компоненты
   #boardConatiner = null;
   #boardPoints = null;
   #boardOffers = null;
   #boardDestinations = null;
+
+  //презентеры
+  #waypointPresenters = new Map();
 
   constructor({boardContainer, pointsModel, offersModel, destinationModel}) {
     this.#boardConatiner = boardContainer;
@@ -22,6 +28,7 @@ export default class BoardPresenter {
   }
 
   init() {
+    //запись моков в компоненты
     this.#boardPoints = [...this.#pointsModel.getPoints()];
     this.#boardOffers = [...this.#offersModel.getOffers()];
     this.#boardDestinations = [...this.#destinationModel.getDestinations()];
@@ -42,11 +49,28 @@ export default class BoardPresenter {
     }
   }
 
-  #renderPoint = (container, point, {offers}, {destination}) => {
+  #renderPoint = (container, points, {offers}, {destination}) => {
 
-    const wayPointComponent = new WaypointPresenter({container, point, offers, destination});
+    const waypointComponent = new WaypointPresenter({
+      container,
+      points,
+      offers,
+      destination,
+      changeData: this.#waypointChange,
+      changeMode: this.#modeChange,
+    });
 
-    wayPointComponent.init();
+    waypointComponent.init();
 
+    this.#waypointPresenters.set(points.id, waypointComponent);
+  };
+
+  #waypointChange = (updatedWaypoint) => {
+    this.#boardPoints = updateItem(this.#boardPoints, updatedWaypoint);
+    this.#waypointPresenters.get(updatedWaypoint.id).init(updatedWaypoint);
+  };
+
+  #modeChange = () => {
+    this.#waypointPresenters.forEach((presenter) => presenter.resetView());
   };
 }

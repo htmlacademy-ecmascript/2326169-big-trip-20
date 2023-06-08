@@ -1,6 +1,7 @@
 import FormEditView from '../view/form-edit.js';
 import WaypointView from '../view/waypoint.js';
-import { render, RenderPosition, replace } from '../framework/render.js';
+import { Mode } from '../mock/const.js';
+import { render, replace, remove } from '../framework/render.js';
 
 export default class WaypointPresenter {
   #container = null;
@@ -8,59 +9,104 @@ export default class WaypointPresenter {
   #offers = null;
   #destination = null;
 
-  constructor({container, point, offers, destination}) {
+  #changeData = null;
+  #changeMode = null;
+
+  #waypointComponent = null;
+  #waypointEditComponent = null;
+  #mode = Mode.DEFAULT;
+
+  constructor({container, points, offers, destination, changeData, changeMode}) {
     this.#container = container;
-    this.#point = point;
+    this.#point = points;
     this.#offers = offers;
     this.#destination = destination;
+    this.#changeData = changeData;
+    this.#changeMode = changeMode;
   }
 
   init() {
-    const wayPointComponentForView = new WaypointView(
+    const prevWaypointComponent = this.#waypointComponent;
+    const prevWaypointEditComponent = this.#waypointEditComponent;
+
+    this.#waypointComponent = new WaypointView(
       this.#point,
       this.#offers,
-      {onEditClick: formEditClickHandler}
+      {onEditClick: this.#editClick},
+      {onFavoriteClick: this.#favoriteClick}
     );
 
-    const formEditComponentForView = new FormEditView(
+    this.#waypointEditComponent = new FormEditView(
       this.#point,
       this.#offers,
       this.#destination,
-      {onFormReset: resetButtonClickHandler},
-      {onFormSubmit: wayPointSubmitHandler}
+      {onFormReset: this.#resetButtonClickHandler},
+      {onFormSubmit: this.#wayPointSubmitHandler}
     );
 
-    const replaceWayPointToFormEdit = () => {
-      replace(formEditComponentForView, wayPointComponentForView);
-    };
-
-    const replaceFormEditToWayPoint = () => {
-      replace(wayPointComponentForView, formEditComponentForView);
-    };
-
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormEditToWayPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    function formEditClickHandler () {
-      replaceWayPointToFormEdit();
-      document.addEventListener('keydown', escKeyDownHandler);
+    if (prevWaypointComponent === null || prevWaypointEditComponent === null) {
+      render(this.#waypointComponent, this.#container);
     }
 
-    function resetButtonClickHandler() {
-      replaceFormEditToWayPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
+    if (this.#mode === Mode.DEFAULT) {
+      replace(this.#waypointComponent, prevWaypointComponent);
     }
 
-    function wayPointSubmitHandler() {
-      replaceFormEditToWayPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
+    if (this.#mode === Mode.EDITING) {
+      replace(this.#waypointEditComponent, prevWaypointEditComponent);
     }
 
-    render(wayPointComponentForView, this.#container, RenderPosition.BEFOREEND);
+    remove(prevWaypointComponent);
+    remove(prevWaypointEditComponent);
+  }
+
+  resetView = () => {
+    if (this.#mode !== this.#mode.DEFAULT) {
+      this.#replaceFormEditToWayPoint();
+    }
+  };
+
+  destroy = () => {
+    remove(this.#waypointComponent);
+    remove(this.#waypointEditComponent);
+  };
+
+
+  #replaceWayPointToFormEdit = () => {
+    replace(this.#waypointEditComponent, this.#waypointComponent);
+  };
+
+  #replaceFormEditToWayPoint = () => {
+    replace(this.#waypointComponent, this.#waypointEditComponent);
+  };
+
+  #escKeyDownHandler = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this.#replaceFormEditToWayPoint();
+      document.removeEventListener('keydown', this.#escKeyDownHandler);
+    }
+  };
+
+  #editClick () {
+    this.#replaceWayPointToFormEdit();
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+  }
+
+  #favoriteClick () {
+    this.#changeData({
+      ...this.#point,
+      isFavorite: !this.#point.isFavorite
+    });
+  }
+
+  #resetButtonClickHandler() {
+    this.#replaceFormEditToWayPoint();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  }
+
+  #wayPointSubmitHandler() {
+    this.#replaceFormEditToWayPoint();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 }

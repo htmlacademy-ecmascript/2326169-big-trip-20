@@ -63,4 +63,9 @@ const FilterType = {
   PAST: 'past',
 };
 
-export { CITIES, DESCRIPTION_FOR_DESTINATION, Duration, TypeWaypoints, FAVORITE, Price, TITLES, FormatDateForWaipoints, FormatDateForFormEdit, FilterType};
+const Mode = {
+  DEFAULT: 'default',
+  EDITING: 'editing'
+};
+
+export { CITIES, DESCRIPTION_FOR_DESTINATION, Duration, TypeWaypoints, FAVORITE, Price, TITLES, FormatDateForWaipoints, FormatDateForFormEdit, FilterType, Mode };
