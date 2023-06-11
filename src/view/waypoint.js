@@ -1,10 +1,15 @@
 import { getPointDudration } from '../mock/util.js';
 import { FormatDateForWaipoints } from '../mock/const.js';
 import AbstractView from '../framework/view/abstract-view.js';
+import { getRandomArrayElement } from '../util.js';
 
 function createWaypointTemplate(point, offers) {
   const { basePrice, type, destination, dateFrom, dateTo } = point;
-  const { title, price } = offers[0];
+
+  const randomOffers = getRandomArrayElement(offers);
+  const title = randomOffers.title;
+  const price = randomOffers.price;
+
   const timeDifference = getPointDudration(dateFrom, dateTo);
   const dateFormatFrom = dateFrom.format(FormatDateForWaipoints.DATE_FORMAT);
   const timeFormatFrom = dateFrom.format(FormatDateForWaipoints.HOUR_MINUTE_FORMAT);
@@ -54,23 +59,36 @@ function createWaypointTemplate(point, offers) {
 export default class WaypointView extends AbstractView {
   #point = null;
   #offers = null;
-  #onEditClick = null;
 
-  constructor({point}, {offers}, {onEditClick}) {
+  constructor(point, offers, {onEditClick}, {onFavoriteClick}) {
     super();
     this.#point = point;
     this.#offers = offers;
-    this.#onEditClick = onEditClick;
+    this.onEditClick = onEditClick;
+    this.onFavoriteClick = onFavoriteClick;
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onEditClickHandler);
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.editClick);
+    this.element
+      .querySelector('.event__favorite-icon')
+      .addEventListener('click', this.favoriteClick);
   }
 
   get template() {
-    return createWaypointTemplate(this.#point, this.#offers);
+    return createWaypointTemplate(
+      this.#point,
+      this.#offers
+    );
   }
 
-  #onEditClickHandler = (evt) => {
+  editClick = (evt) => {
     evt.preventDefault();
-    this.#onEditClick();
+    this.onEditClick();
+  };
+
+  favoriteClick = (evt) => {
+    evt.preventDefault();
+    this.onFavoriteClick();
   };
 }

@@ -14,15 +14,12 @@ const DESCRIPTION_FOR_DESTINATION = [
   'Peace'
 ];
 
-const TITLES = {
-  title:
-  [
-    'Upgrade to a business class',
-    'Choose the radio station',
-    'Choose temperature',
-    'Drive slowly'
-  ]
-};
+const TITLES = [
+  'Upgrade to a business class',
+  'Choose the radio station',
+  'Choose temperature',
+  'Drive slowly'
+];
 
 const Duration = {
   HOUR: 5,
@@ -66,4 +63,9 @@ const FilterType = {
   PAST: 'past',
 };
 
-export { CITIES, DESCRIPTION_FOR_DESTINATION, Duration, TypeWaypoints, FAVORITE, Price, TITLES, FormatDateForWaipoints, FormatDateForFormEdit, FilterType};
+const Mode = {
+  DEFAULT: 'default',
+  EDITING: 'editing'
+};
+
+export { CITIES, DESCRIPTION_FOR_DESTINATION, Duration, TypeWaypoints, FAVORITE, Price, TITLES, FormatDateForWaipoints, FormatDateForFormEdit, FilterType, Mode };

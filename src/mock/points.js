@@ -12,9 +12,8 @@ const generatePoint = () => ({
   dateTo: humanizeTaskDueDate(getDate({next: true})),
   destination: generateDestinations()[0].name,
   isFavorite: getRandomArrayElement(FAVORITE),
-  offers: generateOffer().price,
+  offers: generateOffer()[0].price,
   type: getRandomArrayElement(TypeWaypoints.type)
 });
-
 
 export { generatePoint };
